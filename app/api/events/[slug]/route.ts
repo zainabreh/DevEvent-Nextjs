@@ -2,6 +2,8 @@ import { IEvent } from './../../../../models/Event';
 import connectToDatabase from "@/lib/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import Event from "@/models/Event";
+
+
 // Interface for route parameters
 interface RouteParams {
   params: {
@@ -17,13 +19,10 @@ interface RouteParams {
  * @param params - Route parameters containing the slug
  * @returns Event document as JSON or error response
  */
-export async function GET(
-  req: NextRequest,
-  { params }: RouteParams,
-): Promise<NextResponse<{ event?: IEvent; message: string }>> {
+export async function GET(req: NextRequest,{ params }: RouteParams): Promise<NextResponse<{ event?: IEvent; message: string }>> {
   try {
     // Validate slug parameter
-    const { slug } = params;
+    const { slug } = await params;
 
     if (!slug || typeof slug !== "string") {
       return NextResponse.json(
