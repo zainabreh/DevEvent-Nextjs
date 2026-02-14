@@ -1,10 +1,11 @@
 import EventCard from "@/components/EventCard";
 import ExploreBtn from "@/components/ExploreBtn";
+import { getEvents } from "@/lib/actions/event.action";
 import { IEvent } from "@/models/Event";
 import { cacheLife } from "next/cache";
-import {events} from "@/lib/constants";
+// import {events} from "@/lib/constants"
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+// const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 const page = async () => {
 
@@ -13,7 +14,14 @@ const page = async () => {
 
   // const response = await fetch(`${BASE_URL}/api/events`);
 
+  // console.log("Response:",response);
+  
+  
   // const {events} = await response.json();
+  
+  // console.log("Events:",events);
+
+  const events = await getEvents(); 
 
   return (
     <section>

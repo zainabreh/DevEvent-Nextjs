@@ -16,3 +16,17 @@ export const getSimilarEventBySlug = async (slug: string) => {
     }
 
 }
+
+export const getEvents = async () => {
+    try{
+        await connectToDatabase();
+
+        const events = await Event.find().lean();
+
+        return events;
+    }
+    catch{
+        return [];
+    }
+
+}
