@@ -30,3 +30,17 @@ export const getEvents = async () => {
     }
 
 }
+
+export const getEventDetail = async (slug: string) => {
+    try{
+        await connectToDatabase();
+
+        const event = await Event.findOne({slug});
+
+        return await Event.find({_id: event._id}).lean();
+    }
+    catch{
+        return [];
+    }
+
+}

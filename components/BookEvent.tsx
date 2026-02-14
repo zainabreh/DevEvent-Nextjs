@@ -9,13 +9,19 @@ const BookEvent = ({eventId,slug}:{eventId:string,slug:string}) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
 
-    const { success } = await createBooking({eventId,slug,email});
+    e.preventDefault();
 
-    if(success){
-      setSubmitted(true);
-    }else{
-      console.error("Booking creation failed");
-      
+    try {
+      const { success } = await createBooking({eventId,slug,email});
+  
+      if(success){
+        setSubmitted(true);
+      }else{
+        console.error("Booking creation failed");
+        
+      }
+    } catch (error) {
+      console.error("Error creating booking:", error);
     }
   };
 

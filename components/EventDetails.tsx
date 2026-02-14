@@ -1,4 +1,4 @@
-import { getSimilarEventBySlug } from "@/lib/actions/event.action";
+import { getEventDetail, getSimilarEventBySlug } from "@/lib/actions/event.action";
 import { IEvent } from "@/models/Event";
 import { cacheLife } from "next/cache";
 import { notFound } from "next/navigation";
@@ -55,35 +55,56 @@ const EventDetails = async ({
 
   const  slug  = await params;
 
+  console.log("slug: ", slug);
+  
 
-  const response = await fetch(`${BASE_URL}/api/events/${slug}`,{
-    next:{
-      revalidate:60
-    }
-  });
+  const  event:IEvent[]  = await getEventDetail(slug);
 
-  if (!response.ok) {
-    const errorData = await response.json();
-    console.error("API Error:", errorData);
-    return notFound();
-  }
+const {
+  description,
+  _id,
+  image,
+  overview,
+  date,
+  time,
+  location,
+  mode,
+  agenda,
+  audience,
+  tags,
+  organizer
+} = event[0];
+  
 
-  const {
-    event: {
-      description,
-      _id,
-      image,
-      overview,
-      date,
-      time,
-      location,
-      mode,
-      agenda,
-      audience,
-      tags,
-      organizer
-    },
-  } = await response.json();
+
+  // const response = await fetch(`${BASE_URL}/api/events/${slug}`,{
+  //   next:{
+  //     revalidate:60
+  //   }
+  // });
+
+  // if (!response.ok) {
+  //   const errorData = await response.json();
+  //   console.error("API Error:", errorData);
+  //   return notFound();
+  // }
+
+  // const {
+  //   event: {
+  //     description,
+  //     _id,
+  //     image,
+  //     overview,
+  //     date,
+  //     time,
+  //     location,
+  //     mode,
+  //     agenda,
+  //     audience,
+  //     tags,
+  //     organizer
+  //   },
+  // } = await response.json();
 
 
   if (!description) {
@@ -171,7 +192,7 @@ const EventDetails = async ({
               <p className="text-sm">Be the first to book your spot!</p>
             )}
 
-            <BookEvent eventId={_id} slug={slug} />
+            <BookEvent eventId={_id.toString()} slug={slug} />
           </div>
 
         </aside>
